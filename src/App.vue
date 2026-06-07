@@ -7,12 +7,7 @@
   <TheNav />
 
   <main id="top">
-    <HeroSection @request-sound="handleSound" />
-    <AnatomySection />
-    <PhilosophySection />
-    <PartsSection />
-    <SoundsSection />
-    <GuideSection />
+    <RouterView />
   </main>
 
   <TheFooter />
@@ -22,15 +17,8 @@
 import { ref, onMounted } from 'vue'
 import { useScene } from './composables/useScene.js'
 import { useSound } from './composables/useSound.js'
-import { useReveal } from './composables/useReveal.js'  // ← toevoegen
 
 import TheNav from './components/TheNav.vue'
-import HeroSection from './components/HeroSection.vue'
-import AnatomySection from './components/AnatomySection.vue'
-import PhilosophySection from './components/PhilosophySection.vue'
-import PartsSection from './components/PartsSection.vue'
-import SoundsSection from './components/SoundsSection.vue'
-import GuideSection from './components/GuideSection.vue'
 import TheFooter from './components/TheFooter.vue'
 
 const canvasRef = ref(null)
@@ -39,12 +27,7 @@ const cursorDown = ref(false)
 const cursorHidden = ref(false)
 
 const scene = useScene()
-const { ensure, play } = useSound()
-const reveal = useReveal()  // ← toevoegen
-
-function handleSound(type) {
-  play(type)
-}
+const { ensure } = useSound()
 
 function initCursor() {
   if (window.matchMedia('(pointer: coarse)').matches) return
@@ -74,11 +57,8 @@ function initCursor() {
 }
 
 onMounted(() => {
-  reveal.init()  // ← toevoegen
-
   window.addEventListener('pointerdown', () => ensure(), { once: true })
   window.addEventListener('keydown', () => ensure(), { once: true })
-
   scene.init(canvasRef.value)
   initCursor()
 })

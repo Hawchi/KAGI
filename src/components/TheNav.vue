@@ -4,12 +4,11 @@
       <span class="mark kanji">鍵</span>
       <span class="name">KAGI</span>
     </a>
-    <div class="links">
-      <a href="#anatomy" data-hot>Anatomy</a>
-      <a href="#parts" data-hot>Parts</a>
-      <a href="#sounds" data-hot>Sounds</a>
-      <a href="#guide" data-hot>Guide</a>
-    </div>
+  <div class="links">
+    <RouterLink to="/switches" data-hot>Switches</RouterLink>
+    <RouterLink to="/parts" data-hot>Parts</RouterLink>
+    <RouterLink to="/guide" data-hot>Guide</RouterLink>
+  </div>
   </nav>
 </template>
 
