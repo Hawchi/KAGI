@@ -212,6 +212,90 @@
           </div>
         </section>
 
+        <!-- ═══ PCB — interactive variants ═══ -->
+<section id="p2" class="part" data-part="p2" data-label="基板">
+  <div class="wrap">
+
+    <div class="part-head" data-reveal>
+      <div class="part-num">02<span class="tot">/07</span></div>
+      <div class="part-meta">基板<br><b>THE BRAIN</b></div>
+    </div>
+
+    <div class="part-intro" data-reveal>
+      <div class="part-jp">基板</div>
+      <h2 class="part-name">PCB</h2>
+      <div class="part-romaji">KIBAN — PRINTED CIRCUIT BOARD</div>
+      <p class="part-role-text">The brain. It reads every keystroke and sends it to your computer.</p>
+    </div>
+
+    <div class="variant-picker" data-reveal>
+      <span class="col-h">Select type</span>
+      <div class="vpick-row">
+        <button
+          v-for="v in pcbVariants"
+          :key="v.id"
+          class="vpick-btn"
+          :class="{ active: activePcbVariant === v.id }"
+          @click="activePcbVariant = v.id"
+        >
+          <span class="vpick-sym">{{ v.sym }}</span>
+          <span class="vpick-name">{{ v.name }}</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="variant-detail" data-reveal>
+      <div class="vd-left">
+        <Transition name="vd-blur" mode="out-in">
+          <div :key="activePcbVariant" class="vd-text">
+            <p class="vd-tagline">{{ activePcbData.tagline }}</p>
+            <p class="vd-body" v-for="b in activePcbData.body" :key="b" v-html="b"></p>
+            <div class="vd-specs">
+              <div class="spec" v-for="s in activePcbData.specs" :key="s.k">
+                <dt>{{ s.k }}</dt>
+                <dd>{{ s.v }}</dd>
+              </div>
+            </div>
+          </div>
+        </Transition>
+      </div>
+      <div class="vd-right">
+        <Transition name="vd-blur" mode="out-in">
+          <div :key="activePcbVariant" class="slot slot-frame vd-slot">
+            <span class="corner a"></span><span class="corner b"></span>
+            <span class="corner c"></span><span class="corner d"></span>
+            <img
+              v-if="activePcbData.img"
+              :src="activePcbData.img"
+              :alt="activePcbData.name"
+              class="slot-img"
+            />
+            <span class="slot-tag">{{ activePcbData.figLabel }}</span>
+            <span class="slot-cap">RENDER ▸ <b>{{ activePcbData.imgLabel }}</b></span>
+          </div>
+        </Transition>
+      </div>
+    </div>
+
+    <div class="part-grid" data-reveal>
+      <div>
+        <div class="col-h">Considerations</div>
+        <ul class="consider">
+          <li v-html="`<span>${c}</span>`" v-for="c in pcbConsiderations" :key="c"></li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-h">Features to look for</div>
+        <ul class="consider">
+          <li v-for="f in pcbFeatures" :key="f" v-html="`<span>${f}</span>`"></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
         <!-- ═══ Remaining parts (standard layout) ═══ -->
         <section
           v-for="(part, idx) in otherParts"
@@ -336,6 +420,113 @@
     { id: 'plastic', name: 'Plastic' },
     { id: 'acrylic', name: 'Acrylic' },
   ]
+
+
+  const activePcbVariant = ref('hotswap')
+
+const pcbVariants = [
+  { id: 'hotswap', name: 'Hot-swap' },
+  { id: 'soldered', name: 'Soldered' },
+  { id: 'flexcut', name: 'Flex-cut' },
+  { id: 'rgb', name: 'Per-key RGB' },
+  { id: 'wireless', name: 'Wireless' },
+]
+
+const pcbVariantData = {
+  hotswap: {
+    name: 'Hot-swap',
+    figLabel: 'Hot-swap PCB',
+    imgLabel: 'HOT-SWAP SOCKETS · 基板',
+    img: '/images/pcb-hotswap.jpg',
+    tagline: 'The beginner-friendly choice. Swap switches in seconds, no soldering iron needed.',
+    body: [
+      'A hot-swap PCB has small metal sockets soldered onto it at the factory. You push a switch in, it clicks into place, and it works. Want to try a different switch? Pull it out and push a new one in. No heat, no tools, no risk.',
+      'The trade-off is <strong>socket wear</strong> — after many swaps the sockets can loosen. Most people never hit this limit in normal use, but it is worth knowing. Hot-swap is the recommended starting point for any first build.',
+    ],
+    specs: [
+      { k: 'Socket type', v: 'Kailh / Gateron' },
+      { k: 'Switch change', v: 'Tool-free' },
+      { k: 'Skill level', v: 'Beginner' },
+      { k: 'Reversible', v: 'Yes' },
+      { k: 'Price range', v: '$$' },
+    ],
+  },
+  soldered: {
+    name: 'Soldered',
+    figLabel: 'Soldered PCB',
+    imgLabel: 'SOLDERED JOINTS · 基板',
+    img: '/images/pcb-soldered.jpg',
+    tagline: 'Permanent and reliable. The traditional way to build a keyboard.',
+    body: [
+      'With a soldered PCB, you melt a small amount of <strong>solder</strong> (a metal alloy) to bond each switch pin directly to the board. The connection is rock solid and will never loosen over time.',
+      'The downside is commitment. Changing switches means desoldering every single one, which takes time and the right tools. Soldering is a learnable skill, but it is not the place to start if you are new to building.',
+    ],
+    specs: [
+      { k: 'Socket type', v: 'None' },
+      { k: 'Switch change', v: 'Requires iron' },
+      { k: 'Skill level', v: 'Intermediate' },
+      { k: 'Reversible', v: 'With effort' },
+      { k: 'Price range', v: '$' },
+    ],
+  },
+  flexcut: {
+    name: 'Flex-cut',
+    figLabel: 'Flex-cut PCB',
+    imgLabel: 'FLEX CUTS · 基板',
+    img: '/images/pcb-flexcut.jpg',
+    tagline: 'Small cuts in the board that let it flex slightly under your fingers.',
+    body: [
+      'A flex-cut PCB has small slits or curves cut into the board material around the switch area. This lets the PCB bend very slightly when you type, which softens the impact and adds a subtle bounciness to the feel.',
+      'Flex cuts are a <strong>design feature</strong>, not a separate product. Many PCBs combine hot-swap sockets with flex cuts. The effect is subtle but noticeable, especially on stiffer mounting styles like top mount.',
+    ],
+    specs: [
+      { k: 'Flex level', v: 'Low to medium' },
+      { k: 'Feel', v: 'Softer, bouncy' },
+      { k: 'Compatible', v: 'Hot-swap or solder' },
+      { k: 'Sound change', v: 'Slightly softer' },
+      { k: 'Price range', v: '$$' },
+    ],
+  },
+  rgb: {
+    name: 'Per-key RGB',
+    figLabel: 'RGB PCB',
+    imgLabel: 'PER-KEY RGB · 基板',
+    img: '/images/pcb-rgb.jpg',
+    tagline: 'A light under every key, individually controllable.',
+    body: [
+      'A per-key RGB PCB has a small <strong>LED (light-emitting diode)</strong> mounted under each switch position. Through firmware like QMK or VIA you can set every key to any colour, animate them, or react to keypresses.',
+      'RGB adds cost and complexity but no functional benefit. It looks best through <strong>polycarbonate cases</strong> and translucent or doubleshot keycaps. If you want the light to show through, plan your case and keycap choice around it.',
+    ],
+    specs: [
+      { k: 'LED type', v: 'SMD RGB' },
+      { k: 'Control', v: 'QMK / VIA' },
+      { k: 'Per-key', v: 'Yes' },
+      { k: 'Power draw', v: 'Higher' },
+      { k: 'Price range', v: '$$$' },
+    ],
+  },
+  wireless: {
+    name: 'Wireless',
+    figLabel: 'Wireless PCB',
+    imgLabel: 'WIRELESS PCB · 基板',
+    img: '/images/pcb-wireless.jpg',
+    tagline: 'No cable. Powered by a battery, connected over Bluetooth.',
+    body: [
+      'A wireless PCB replaces the USB connection with a <strong>Bluetooth chip and battery</strong>. You get a clean desk without a cable running to your keyboard. Most wireless boards also support wired mode as a fallback.',
+      'The custom keyboard community is still catching up on wireless support. Firmware options are more limited than wired QMK boards, and high-end wireless PCBs are less common. <strong>ZMK</strong> is the main open-source firmware for wireless builds.',
+    ],
+    specs: [
+      { k: 'Protocol', v: 'Bluetooth 5.0' },
+      { k: 'Firmware', v: 'ZMK' },
+      { k: 'Battery', v: '2000 mAh typical' },
+      { k: 'Wired fallback', v: 'Usually yes' },
+      { k: 'Price range', v: '$$$' },
+    ],
+  },
+}
+
+const activePcbData = computed(() => pcbVariantData[activePcbVariant.value])
+
 
   const caseVariantData = {
     alu: {
@@ -502,31 +693,6 @@
   // ── Other parts (standard layout) ─────────────────────────
   const otherParts = [
     {
-      id: 'p2', jpLabel: '基板', deco: '基', label: 'PCB',
-      role: 'THE BRAIN', romaji: 'KIBAN — PRINTED CIRCUIT BOARD',
-      tagline: 'The brain. It reads every keystroke and hands it to the firmware.',
-      body: [
-        'The PCB registers switch presses and routes them over USB-C. The first decision is <strong>hot-swap vs. soldered</strong> — sockets let you change switches with no iron; soldering is more reliable and accepts any switch.',
-        'Look for <strong>flex cuts</strong> that let the board give under-finger, a <strong>daughterboard</strong> for a cleaner USB port, and <strong>QMK / VIA</strong> support so you can remap every key in software.',
-      ],
-      imgLabel: 'HOT-SWAP PCB · 基板', img: null,
-      specs: [
-        { k: 'Type', v: 'Hot-swap' }, { k: 'Connector', v: 'USB-C + JST' },
-        { k: 'Firmware', v: 'QMK / VIA' }, { k: 'Flex cuts', v: 'Yes' }, { k: 'Polling', v: '1000 Hz' },
-      ],
-      considerations: [
-        '<b>Hot-swap vs. solder</b> — convenience against reliability.',
-        '<b>Flex cuts</b> soften the typing feel across the board.',
-        '<b>Switch orientation</b> — south-facing avoids cap interference.',
-        '<b>VIA support</b> for easy, software-side remapping.',
-      ],
-      variants: [
-        { name: 'Hot-swap', key: true }, { name: 'Soldered' },
-        { name: 'Flex-cut' }, { name: 'Per-key RGB' }, { name: 'Wireless' },
-      ],
-      indexLabel: '基板 / PCB', buildRole: 'Seat & test the board',
-    },
-    {
       id: 'p3', jpLabel: 'プレート', deco: '板', label: 'Plate',
       role: 'STRUCTURE', romaji: 'PURĒTO — 板金',
       tagline: 'The layer the switches clip into. It tunes the board\'s stiffness and pitch.',
@@ -654,9 +820,23 @@
     },
   ]
 
-  // For build order list
   const casePartMeta = { id: 'p1', label: 'Case', jpLabel: 'ケース', buildRole: 'Mount the chassis' }
-  const allParts = [casePartMeta, ...otherParts]
+  const pcbPartMeta = { id: 'p2', label: 'PCB', jpLabel: '基板', buildRole: 'Seat & test the board' }
+  const allParts = [casePartMeta, pcbPartMeta, ...otherParts]
+
+  const pcbConsiderations = [
+  '<b>Hot-swap vs. soldered</b> — convenience against reliability.',
+  '<b>Flex cuts</b> soften the typing feel across the board.',
+  '<b>Switch orientation</b> — south-facing avoids keycap interference.',
+  '<b>Wireless</b> adds freedom but limits firmware options.',
+]
+
+const pcbFeatures = [
+  '<b>QMK / VIA support</b> for full key remapping in software.',
+  '<b>USB-C</b> with a daughterboard for a cleaner port placement.',
+  '<b>1000 Hz polling</b> for fast, accurate input registration.',
+  '<b>ESD protection</b> to guard against static damage.',
+]
 
   // For side nav
   const parts = [
