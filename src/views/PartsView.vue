@@ -441,7 +441,7 @@ const pcbVariantData = {
     tagline: 'The beginner-friendly choice. Swap switches in seconds, no soldering iron needed.',
     body: [
       'A hot-swap PCB has small metal sockets soldered onto it at the factory. You push a switch in, it clicks into place, and it works. Want to try a different switch? Pull it out and push a new one in. No heat, no tools, no risk.',
-      'The trade-off is <strong>socket wear</strong> — after many swaps the sockets can loosen. Most people never hit this limit in normal use, but it is worth knowing. Hot-swap is the recommended starting point for any first build.',
+      'The trade-off is <strong>socket wear</strong>. After many swaps the sockets can loosen. Most people never hit this limit in normal use, but it is worth knowing. Hot-swap is the recommended starting point for any first build.',
     ],
     specs: [
       { k: 'Socket type', v: 'Kailh / Gateron' },
@@ -458,7 +458,7 @@ const pcbVariantData = {
     img: '/images/pcb-soldered.jpg',
     tagline: 'Permanent and reliable. The traditional way to build a keyboard.',
     body: [
-      'With a soldered PCB, you melt a small amount of <strong>solder</strong> (a metal alloy) to bond each switch pin directly to the board. The connection is rock solid and will never loosen over time.',
+      'With a soldered PCB, you melt a small amount of <strong>solder</strong>  (a metal alloy) to bond each switch pin directly to the board. The connection is rock solid and will never loosen over time.',
       'The downside is commitment. Changing switches means desoldering every single one, which takes time and the right tools. Soldering is a learnable skill, but it is not the place to start if you are new to building.',
     ],
     specs: [
@@ -612,19 +612,19 @@ const activePcbData = computed(() => pcbVariantData[activePcbVariant.value])
     polyFlipped.value = false
   }
 
-  const caseConsiderations = [
-    '<b>Mount style</b> sets flex & sound — gasket is softest, tray most rigid.',
-    '<b>Weight & material</b> change the pitch and desk presence.',
-    '<b>Typing angle</b> affects wrist comfort; 6–7° is typical.',
-    '<b>Serviceability</b> — how easily it opens up for tuning.',
-  ]
+const caseConsiderations = [
+  '<b>Mount style</b> determines how much flex and bounce the board has. Gasket is the softest, tray mount is the most rigid.',
+  '<b>Weight and material</b> affect the pitch of the sound and how stable the board sits on your desk.',
+  '<b>Typing angle</b> affects wrist comfort during long sessions. Most boards sit between 6 and 7 degrees.',
+  '<b>Serviceability</b> is how easily the case opens up when you want to tune or modify the build later.',
+]
 
-  const caseMounts = [
-    '<b>Gasket mount</b> — plate floats on foam strips. Soft, bouncy feel.',
-    '<b>Top mount</b> — plate screws into the top case. Firm and uniform.',
-    '<b>Tray mount</b> — PCB screws directly into the base. Most rigid.',
-    '<b>Sandwich mount</b> — plate sandwiched between top and bottom halves.',
-  ]
+const caseMounts = [
+  '<b>Gasket mount</b> lets the plate float on foam strips. The softest and most bouncy typing feel available.',
+  '<b>Top mount</b> screws the plate directly into the top half of the case. Firm and consistent across the whole board.',
+  '<b>Tray mount</b> screws the PCB straight into the base. The most rigid option, common on budget builds.',
+  '<b>Sandwich mount</b> clamps the plate between the top and bottom halves of the case. A middle ground in flex and sound.',
+]
 
   const activeFormFactor = ref('65')
 
@@ -644,7 +644,7 @@ const activePcbData = computed(() => pcbVariantData[activePcbVariant.value])
       keyboard: 'Rich98',
       img: '/images/ff-100.jpg',
       imgPos: 'center center',
-      note: 'The complete layout. Numpad, function row, nav cluster — everything is where you expect it to be. Best suited for heavy data entry, spreadsheet work, and anyone who refuses to give up the numpad. The trade-off is size: a full layout takes up serious desk real estate and pushes your mouse further to the right. Not the most popular choice in the custom keyboard world, but there is something satisfying about a board that holds nothing back.',
+      note: 'The complete layout. Numpad, function row, nav cluster. Everything is where you expect it to be. Best suited for heavy data entry, spreadsheet work, and anyone who refuses to give up the numpad. It takes up serious desk real estate and pushes your mouse further to the right. Not the most popular choice in the custom keyboard world, but there is something satisfying about a board that holds nothing back.',
     },
     tkl: {
       id: 'tkl', pct: 80, name: 'TKL',
@@ -667,7 +667,7 @@ const activePcbData = computed(() => pcbVariantData[activePcbVariant.value])
       keys: '68', desc: 'Arrows, no F-row',
       keyboard: 'Kyuu',
       img: '/images/ff-65.jpg',
-      imgPos: 'center 25%',
+      imgPos: 'right 23%',
       note: 'The 65% drops the function row but keeps dedicated arrow keys and a handful of navigation keys on the right side. It is the sweet spot for most enthusiasts: compact enough to look elegant on a desk, functional enough for daily use without constantly reaching for a layer. The layout forces you to use Fn combinations for F-keys, which most people find easy to adapt to. If you are building your first custom keyboard and want something that balances size with usability, this is where to start.',
     },
     '60': {
@@ -824,18 +824,18 @@ const activePcbData = computed(() => pcbVariantData[activePcbVariant.value])
   const pcbPartMeta = { id: 'p2', label: 'PCB', jpLabel: '基板', buildRole: 'Seat & test the board' }
   const allParts = [casePartMeta, pcbPartMeta, ...otherParts]
 
-  const pcbConsiderations = [
-  '<b>Hot-swap vs. soldered</b> — convenience against reliability.',
-  '<b>Flex cuts</b> soften the typing feel across the board.',
-  '<b>Switch orientation</b> — south-facing avoids keycap interference.',
-  '<b>Wireless</b> adds freedom but limits firmware options.',
+const pcbConsiderations = [
+  '<b>Hot-swap vs. soldered</b> is the first decision. Hot-swap is easier; soldered is more permanent.',
+  '<b>Flex cuts</b> are small slits in the board that soften the typing feel slightly.',
+  '<b>South-facing switches</b> prevent the LED from clashing with the bottom of your keycaps.',
+  '<b>Wireless</b> gives you a cleaner desk but comes with fewer firmware options.',
 ]
 
 const pcbFeatures = [
-  '<b>QMK / VIA support</b> for full key remapping in software.',
-  '<b>USB-C</b> with a daughterboard for a cleaner port placement.',
-  '<b>1000 Hz polling</b> for fast, accurate input registration.',
-  '<b>ESD protection</b> to guard against static damage.',
+  '<b>QMK / VIA support</b> lets you remap every key without touching any code.',
+  '<b>USB-C with a daughterboard</b> puts the port in a better spot and protects the PCB if the cable gets yanked.',
+  '<b>1000 Hz polling</b> means the board sends input to your PC 1000 times per second, very fast and accurate.',
+  '<b>ESD protection</b> guards the board against static electricity damage during handling.',
 ]
 
   // For side nav
