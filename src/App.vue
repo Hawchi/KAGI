@@ -2,7 +2,7 @@
   <div id="cursor" :class="{ 'is-hot': cursorHot, 'is-down': cursorDown, 'is-hidden': cursorHidden }"></div>
   <div id="cursor-dot" :class="{ 'is-hidden': cursorHidden }"></div>
 
-  <canvas ref="canvasRef" id="kbd-canvas"></canvas>
+  <canvas v-if="route.path === '/'" ref="canvasRef" id="kbd-canvas"></canvas>
 
   <TheNav />
 
@@ -15,12 +15,14 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useScene } from './composables/useScene.js'
 import { useSound } from './composables/useSound.js'
 
 import TheNav from './components/TheNav.vue'
 import TheFooter from './components/TheFooter.vue'
 
+const route = useRoute()
 const canvasRef = ref(null)
 const cursorHot = ref(false)
 const cursorDown = ref(false)
@@ -59,7 +61,9 @@ function initCursor() {
 onMounted(() => {
   window.addEventListener('pointerdown', () => ensure(), { once: true })
   window.addEventListener('keydown', () => ensure(), { once: true })
-  scene.init(canvasRef.value)
+  if (route.path === '/') {
+    scene.init(canvasRef.value)
+  }
   initCursor()
 })
 </script>
